@@ -22,6 +22,22 @@ h3 {
   }
 }
 
+.box-shadow {
+  box-shadow:
+    0 0 0px #ffffff,
+    0 0 1px #ffffff,
+    0 0 25px #ffffff,
+    0 0 1px;
+}
+
+.box-shadow-hover {
+  box-shadow:
+    0 0 0px #ffffff,
+    0 0 1px #ffffff,
+    0 0 25px #ffffff,
+    0 0 1px;
+}
+
 .flash-bg {
   animation: dim-flash 0.2s ease;
 }

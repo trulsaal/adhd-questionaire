@@ -131,7 +131,7 @@ export default function Survey() {
         <button
           type="button"
           onClick={handleReset}
-          className="cursor-pointer flex flex-row  gap-2  items-center bg-red-500 text-white py-2 px-6 font-bold text-lg rounded-full hover:transition-all duration-500  hover:bg-red-400"
+          className="cursor-pointer flex flex-row  gap-2  items-center bg-red-400 text-white py-2 px-6 font-bold text-lg rounded-full hover:transition-all duration-500  hover:bg-red-400"
         >
           Tilbakestill svar
           <FaCircleXmark className="size-5" />
@@ -145,8 +145,8 @@ export default function Survey() {
             <div className=" mt-2 mb-8 flex flex-row items-center md:gap-4 md:my-auto">
               {[0, 1, 2, 3, 4].map((score) => (
                 <label
-                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-pink-300  border-gray-200 font-medium text-2xl
-                    ${answers[index] === score ? "bg-pink-400 text-white" : "bg-white text-black"}
+                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium text-2xl
+                    ${answers[index] === score ? "box-shadow text-white" : "bg-white text-black"}
                     transition-colors duration-150`}
                   key={score}
                 >
