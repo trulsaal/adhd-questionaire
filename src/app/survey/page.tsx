@@ -1,7 +1,7 @@
 "use client";
 
 import { client } from "@/sanity/lib/client";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaArrowCircleRight, FaFileAlt } from "react-icons/fa";
 
@@ -14,7 +14,7 @@ export default function Survey() {
 
   const [surveyData, setSurveyData] = useState<Survey | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-
+  const router = useRouter();
   useEffect(() => {
     // Fetch survey data from Sanity
     client.fetch('*[_type == "survey"]{title, statements}').then((data) => {
@@ -29,15 +29,12 @@ export default function Survey() {
   }
 
   // Handle the radio button change
-  const handleChange = (index: any, score: number) => {
+  const handleChange = (index: number, score: number) => {
     setAnswers({
       ...answers,
       [index]: score, // Store the score for the statement
     });
   };
-
-  // Inside your component
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
