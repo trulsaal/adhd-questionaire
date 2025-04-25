@@ -1,15 +1,14 @@
-// pages/api/submitSurvey.js
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Only POST requests allowed" });
   }
 
-  const { surveyId, answers } = req.body;
+  // Your logic here...
 
-  console.log("Received survey response:", { surveyId, answers });
-
-  // TODO: Save to database, forward to Sanity, etc.
-
-  res.status(200).json({ message: "Survey submitted successfully" });
+  return res.status(200).json({ message: "Survey submitted successfully!" });
 }
