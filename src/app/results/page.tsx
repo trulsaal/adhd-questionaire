@@ -40,7 +40,7 @@ export default function ResultsPage() {
               className="mb-1 md:h-10 gap-2 flex items-center px-2 rounded"
             >
               <FaPlusCircle className="text-pink-400 size-3" />
-              <p className="text-white text-[12px] md:text-normal">
+              <p className="text-white text-[12px] md:text-sm">
                 {item.statement}
               </p>
             </div>
@@ -56,15 +56,15 @@ export default function ResultsPage() {
               className="mb-1 h-10 gap-2 flex items-center px-2 rounded"
             >
               <FaPlusCircle className="text-pink-300 size-3" />
-              <p className="text-white text-normal">{item.statement}</p>
+              <p className="text-white text-sm">{item.statement}</p>
             </div>
           ))}
       </div>
       <Link
-        className="items-center flex flex-row gap-4 bg-white text-lg font-bold w-fit px-10 py-4 rounded-full hover:bg-gray-300 transition-all duration-300 "
+        className="items-center flex flex-row gap-2 bg-white text-lg font-bold w-fit px-10 py-2 rounded-full hover:bg-gray-300 transition-all duration-300 "
         href="/"
       >
-        <FaCircleArrowLeft className="size-6" />
+        <FaCircleArrowLeft className="size-5" />
         Tilbake
       </Link>
     </div>

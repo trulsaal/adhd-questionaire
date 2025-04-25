@@ -9,3 +9,19 @@ h2 {
 h3 {
   @apply text-lg font-bold text-slate-100 mt-2;
 }
+
+@keyframes dim-flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.flash-bg {
+  animation: dim-flash 0.2s ease;
+}

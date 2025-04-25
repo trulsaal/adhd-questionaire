@@ -4,6 +4,7 @@ import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaArrowCircleRight, FaFileAlt } from "react-icons/fa";
+import { FaCircleXmark } from "react-icons/fa6";
 
 export default function Survey() {
   interface Survey {
@@ -15,31 +16,64 @@ export default function Survey() {
   const [surveyData, setSurveyData] = useState<Survey | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const router = useRouter();
+
   useEffect(() => {
-    // Fetch survey data from Sanity
-    client.fetch('*[_type == "survey"]{title, statements}').then((data) => {
-      if (data.length > 0) {
-        setSurveyData(data[0]); // Assuming there is only one survey document
-      }
-    });
+    client
+      .fetch('*[_type == "survey"]{_id, title, statements}')
+      .then((data) => {
+        if (data.length > 0) {
+          setSurveyData(data[0]);
+        }
+      });
   }, []);
 
-  if (!surveyData) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (surveyData) {
+      const storedAnswers = sessionStorage.getItem("surveyAnswers");
+      if (storedAnswers) {
+        setAnswers(JSON.parse(storedAnswers));
+      }
+    }
+  }, [surveyData]);
 
   // Handle the radio button change
   const handleChange = (index: number, score: number) => {
-    setAnswers({
+    const updatedAnswers = {
       ...answers,
-      [index]: score, // Store the score for the statement
-    });
+      [index]: score,
+    };
+
+    setAnswers(updatedAnswers);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("surveyAnswers", JSON.stringify(updatedAnswers));
+    }
+  };
+
+  const handleReset = () => {
+    setAnswers({});
+    sessionStorage.removeItem("surveyAnswers");
+
+    const body = document.body;
+
+    // Remove the class if it already exists to retrigger the animation
+    body.classList.remove("flash-bg");
+
+    // Force reflow to allow re-adding the class
+    void body.offsetWidth;
+
+    // Add the class to trigger animation
+    body.classList.add("flash-bg");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Construct the response
+    if (!surveyData) {
+      console.error("Survey data is not available.");
+      return;
+    }
+
     const response = {
       surveyId: surveyData._id,
       answers: Object.entries(answers).map(([index, score]) => ({
@@ -79,25 +113,39 @@ export default function Survey() {
     router.push("/results");
   };
 
+  if (!surveyData) {
+    return <div className="text-white p-10">Laster kartlegging...</div>;
+  }
+
   return (
     <form
-      className="md:p-24 rounded-2xl bg-gray-800 gap-1 flex flex-col w-fit m-auto"
+      className="md:p-14 rounded-2xl bg-gray-800 gap-1 flex flex-col w-fit m-auto"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-row gap-2 items-center h-10 mb-4">
-        {" "}
-        <FaFileAlt className="size-10" />
-        <h1 className="">{surveyData.title}</h1>
+      <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
+        <div className="flex flex-row gap-2 items-center h-10">
+          <FaFileAlt className="size-10" />
+          <h1 className="">{surveyData.title}</h1>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleReset}
+          className="cursor-pointer flex flex-row  gap-2  items-center bg-red-500 text-white py-2 px-6 font-bold text-lg rounded-full hover:transition-all duration-500  hover:bg-red-400"
+        >
+          Tilbakestill svar
+          <FaCircleXmark className="size-5" />
+        </button>
       </div>
 
       {surveyData.statements.map((statement, index) => (
         <div className="flex flex-col " key={index}>
-          <div className="hover:opacity-90 flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
-            <p className="text-[12px] md:text-lg">{statement}</p>
-            <div className=" mt-2 mb-4 flex flex-row items-center md:gap-4 my-auto">
+          <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
+            <p className="text-[12px] md:text-sm">{statement}</p>
+            <div className=" mt-2 mb-8 flex flex-row items-center md:gap-4 md:my-auto">
               {[0, 1, 2, 3, 4].map((score) => (
                 <label
-                  className={`cursor-pointer flex items-center justify-center w-7 h-7 md:w-10 md:h-10 md:rounded-full border-2 hover:bg-pink-300  border-gray-200 font-medium text-2xl
+                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-pink-300  border-gray-200 font-medium text-2xl
                     ${answers[index] === score ? "bg-pink-400 text-white" : "bg-white text-black"}
                     transition-colors duration-150`}
                   key={score}
@@ -119,7 +167,7 @@ export default function Survey() {
       ))}
       <div className="w-full flex  items-center mt-10 justify-end  ">
         <button
-          className="cursor-pointer flex flex-row  gap-4  items-center bg-slate-100 py-4 px-6 text-gray-800 font-bold text-lg rounded-full hover:translate-x-1 transition-transform ease-in duration-300 hover:shadow-2xl shadow-black hover:bg-white"
+          className="cursor-pointer flex flex-row  gap-2  items-center bg-slate-100 py-2 px-6 text-gray-800 font-semibold text-lg rounded-full transition-all duration-300  hover:bg-white"
           type="submit"
         >
           Se resultat <FaArrowCircleRight className="size-6" />
