@@ -1,13 +1,19 @@
 "use client";
 
 import { client } from "@/sanity/lib/client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaArrowCircleRight } from "react-icons/fa";
+import { FaArrowCircleRight, FaFileAlt } from "react-icons/fa";
 
 export default function Survey() {
-  const [surveyData, setSurveyData] = useState(null);
-  const [answers, setAnswers] = useState({});
+  interface Survey {
+    _id: string;
+    title: string;
+    statements: string[];
+  }
+
+  const [surveyData, setSurveyData] = useState<Survey | null>(null);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
 
   useEffect(() => {
     // Fetch survey data from Sanity
@@ -23,7 +29,7 @@ export default function Survey() {
   }
 
   // Handle the radio button change
-  const handleChange = (index, score) => {
+  const handleChange = (index: any, score: number) => {
     setAnswers({
       ...answers,
       [index]: score, // Store the score for the statement
@@ -39,7 +45,7 @@ export default function Survey() {
     // Construct the response
     const response = {
       surveyId: surveyData._id,
-      answers: Object.keys(answers).map((index) => ({
+      answers: Object.keys(answers).map((index: any) => ({
         statement: surveyData.statements[Number(index)],
         score: answers[index],
       })),
@@ -81,16 +87,20 @@ export default function Survey() {
       className="md:p-24 rounded-2xl bg-gray-800 gap-1 flex flex-col w-fit m-auto"
       onSubmit={handleSubmit}
     >
-      <h1 className="mb-10">{surveyData.title}</h1>
+      <div className="flex flex-row gap-2 items-center h-10 mb-4">
+        {" "}
+        <FaFileAlt className="size-10" />
+        <h1 className="">{surveyData.title}</h1>
+      </div>
 
       {surveyData.statements.map((statement, index) => (
         <div className="flex flex-col " key={index}>
-          <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center">
+          <div className="hover:opacity-90 flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
             <p className="text-[12px] md:text-lg">{statement}</p>
             <div className=" mt-2 mb-4 flex flex-row items-center md:gap-4 my-auto">
               {[0, 1, 2, 3, 4].map((score) => (
                 <label
-                  className={`cursor-pointer flex items-center justify-center w-7 h-7 md:w-10 md:h-10 md:rounded-full border hover:bg-pink-300  border-gray-600 font-bold
+                  className={`cursor-pointer flex items-center justify-center w-7 h-7 md:w-10 md:h-10 md:rounded-full border-2 hover:bg-pink-300  border-gray-200 font-medium text-2xl
                     ${answers[index] === score ? "bg-pink-400 text-white" : "bg-white text-black"}
                     transition-colors duration-150`}
                   key={score}

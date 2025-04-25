@@ -24,11 +24,10 @@ export default function ResultsPage() {
   return (
     <div className="md:p-24 rounded-2xl bg-gray-800 gap-4 flex flex-col w-fit m-auto">
       <div className="p-4 md:p-0">
-        <h1 className="">Områder kandidaten kan ha utfordringer med</h1>
-        <h3>
+        <h1>
           Følgende faktorer kan ha betydning og bør vies oppmerksomhet når{" "}
           <strong>navn</strong> skal være i en arbeidssituasjon:
-        </h3>
+        </h1>
       </div>
 
       <div className="border-[1px] border-gray-700 rounded-lg p-4">
