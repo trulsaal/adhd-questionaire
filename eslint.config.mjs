@@ -10,7 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:@typescript-eslint/recommended"
+  ),
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error", // This is the key rule you want
+    },
+  },
 ];
 
 export default eslintConfig;

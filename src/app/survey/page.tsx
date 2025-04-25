@@ -1,7 +1,7 @@
 "use client";
 
 import { client } from "@/sanity/lib/client";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaArrowCircleRight, FaFileAlt } from "react-icons/fa";
 

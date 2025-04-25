@@ -1,4 +1,4 @@
-export default {
+const surveyResponseSchema = {
   name: "surveyResponse",
   title: "Survey Response",
   type: "document",
@@ -29,3 +29,5 @@ export default {
     },
   ],
 };
+
+export default surveyResponseSchema;
