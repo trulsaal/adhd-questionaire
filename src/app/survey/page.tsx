@@ -1,7 +1,7 @@
 "use client";
 
 import { client } from "@/sanity/lib/client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaArrowCircleRight, FaFileAlt } from "react-icons/fa";
 
@@ -42,9 +42,9 @@ export default function Survey() {
     // Construct the response
     const response = {
       surveyId: surveyData._id,
-      answers: Object.keys(answers).map((index: any) => ({
-        statement: surveyData.statements[Number(index)],
-        score: answers[index],
+      answers: Object.entries(answers).map(([index, score]) => ({
+        statement: surveyData.statements[parseInt(index, 10)],
+        score,
       })),
     };
 
