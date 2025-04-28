@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const outfitFont = Outfit({
   variable: "--font-outfit",
@@ -22,6 +24,7 @@ export default function RootLayout({
       <body
         className={`${outfitFont.className} font-outfitFont bg-gradient-to-r from-gray-900 to-gray-800 flex h-lvh`}
       >
+        <ToastContainer position="bottom-right" />
         {children}
       </body>
     </html>
