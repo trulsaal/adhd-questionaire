@@ -59,7 +59,7 @@ export default function ResultsPage() {
   };
 
   return (
-    <div className="md:p-24 rounded-2xl bg-gray-800 gap-4 flex flex-col w-fit m-auto">
+    <div className="md:p-24 p-4 rounded-2xl bg-gray-800 gap-4 flex flex-col w-fit m-auto">
       <div className="p-4 md:p-0">
         <h1>
           Følgende faktorer kan ha betydning og bør vies oppmerksomhet når{" "}
@@ -100,12 +100,12 @@ export default function ResultsPage() {
       </div>
       {sent && (
         <div className="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">
-          Answers submitted successfully!
+          Svarene er registrert!
         </div>
       )}
       {/* === Submit Button === */}
       <button
-        className="mt-6 px-10 py-3 bg-blue-500 text-white font-bold rounded-full hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-400"
+        className="mt-6 px-12 py-3 w-fit bg-green-300 text-black font-bold rounded-full hover:bg-green-800 transition-all duration-300 disabled:bg-gray-400"
         onClick={handleSendAnswers}
         disabled={sending || sent} // Disable if sending or already sent
       >

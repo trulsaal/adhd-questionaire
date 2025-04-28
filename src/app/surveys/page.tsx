@@ -95,7 +95,7 @@ export default function MySurveysPage() {
 
   return (
     <div className="space-y-8 p-4 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-white">Survey Responses</h1>
+      <h1 className="text-2xl font-bold text-white">Alle kartlegginger</h1>
 
       {surveys.length === 0 ? (
         <div className="text-gray-400 p-8 text-center">
@@ -123,7 +123,7 @@ export default function MySurveysPage() {
 
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-white">
-                Submitted on: {new Date(survey.submittedAt).toLocaleString()}
+                Registrert: {new Date(survey.submittedAt).toLocaleString()}
               </h2>
             </div>
 

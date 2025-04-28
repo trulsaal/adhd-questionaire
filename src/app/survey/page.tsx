@@ -119,7 +119,7 @@ export default function Survey() {
 
   return (
     <form
-      className="md:p-14 rounded-2xl bg-gray-800 gap-1 flex flex-col w-fit m-auto"
+      className="md:p-14 rounded-2xl bg-gray-800 gap-1 p-4 flex flex-col w-fit m-auto"
       onSubmit={handleSubmit}
     >
       <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
@@ -131,7 +131,7 @@ export default function Survey() {
         <button
           type="button"
           onClick={handleReset}
-          className="cursor-pointer flex flex-row  gap-2  items-center bg-red-400 text-white py-2 px-6 font-bold text-lg rounded-full hover:transition-all duration-500  hover:bg-red-400"
+          className="cursor-pointer flex flex-row  gap-2  items-center bg-red-300 text-gray-800 md:py-2 py-2 px-2 md:px-6 font-bold text-sm md:text-lg rounded-lg hover:transition-all duration-500  hover:bg-red-400"
         >
           Tilbakestill svar
           <FaCircleXmark className="size-5" />
@@ -142,11 +142,11 @@ export default function Survey() {
         <div className="flex flex-col " key={index}>
           <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
             <p className="text-[12px] md:text-lg">{statement}</p>
-            <div className=" mt-2 mb-8 flex flex-row items-center md:gap-4 md:my-auto">
+            <div className="md:mt-2 md:mb-8 flex flex-row items-center md:gap-4 md:my-auto">
               {[0, 1, 2, 3, 4].map((score) => (
                 <label
-                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium text-2xl
-                    ${answers[index] === score ? "box-shadow text-white" : "bg-white text-black"}
+                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl
+                    ${answers[index] === score ? "box-shadow font-black md:font-normal text-white" : "md:bg-white md:text-black "}
                     transition-colors duration-150`}
                   key={score}
                 >
@@ -167,7 +167,7 @@ export default function Survey() {
       ))}
       <div className="w-full flex  items-center mt-10 justify-end  ">
         <button
-          className="cursor-pointer flex flex-row  gap-2  items-center bg-slate-100 py-2 px-6 text-gray-800 font-semibold text-lg rounded-full transition-all duration-300  hover:bg-white"
+          className="cursor-pointer mb-2 flex flex-row  gap-2  items-center bg-slate-100 py-2 px-6 text-gray-800 font-semibold text-lg rounded-full transition-all duration-300  hover:bg-white"
           type="submit"
         >
           Se resultat <FaArrowCircleRight className="size-6" />

@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfitFont.variable} font-outfitFont bg-gradient-to-r from-gray-900 to-gray-800 flex h-lvh`}
+        className={`${outfitFont.variable} font-outfitFont bg-gradient-to-r from-gray-900 to-gray-800 w-lvw p-4 flex h-lvh`}
       >
         {children}
       </body>
