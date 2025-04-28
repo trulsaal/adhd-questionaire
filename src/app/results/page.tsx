@@ -9,6 +9,8 @@ export default function ResultsPage() {
   const [results, setResults] = useState<
     { statement: string; score: number }[]
   >([]);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("surveyResults");
@@ -16,6 +18,36 @@ export default function ResultsPage() {
       setResults(JSON.parse(stored));
     }
   }, []);
+
+  const handleSendAnswers = async () => {
+    setSending(true);
+    try {
+      const filteredResults = results.filter((item) => item.score >= 3);
+
+      const responsePayload = {
+        responses: filteredResults,
+        submittedAt: new Date().toISOString(), // Include the timestamp
+      };
+
+      const res = await fetch("/api/sendAnswers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(responsePayload),
+      });
+
+      if (res.ok) {
+        setSent(true);
+        console.log("Answers sent successfully!");
+      } else {
+        console.error("Failed to send answers:", await res.text());
+      }
+    } catch (err) {
+      console.error("Error sending answers:", err);
+    }
+    setSending(false);
+  };
 
   if (!results.length) {
     return <p>Loading results...</p>;
@@ -46,6 +78,7 @@ export default function ResultsPage() {
             </div>
           ))}
       </div>
+
       <div className="border-[1px] border-gray-700 rounded-lg p-4">
         <h2>Score 3:</h2>
         {results
@@ -60,8 +93,19 @@ export default function ResultsPage() {
             </div>
           ))}
       </div>
+
+      {/* === Submit Button === */}
+      <button
+        className="mt-6 px-10 py-3 bg-blue-500 text-white font-bold rounded-full hover:bg-blue-600 transition-all duration-300 disabled:bg-gray-400"
+        onClick={handleSendAnswers}
+        disabled={sending || sent} // Disable if sending or already sent
+      >
+        {sent ? "Svar sendt!" : sending ? "Sender..." : "Send svar"}
+      </button>
+
+      {/* === Back Link === */}
       <Link
-        className="items-center flex flex-row gap-2 bg-white text-lg font-bold w-fit px-10 py-2 rounded-full hover:bg-gray-300 transition-all duration-300 "
+        className="items-center flex flex-row gap-2 bg-white text-lg font-bold w-fit px-10 py-2 rounded-full hover:bg-gray-300 transition-all duration-300 mt-6"
         href="/"
       >
         <FaCircleArrowLeft className="size-5" />

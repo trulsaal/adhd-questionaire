@@ -27,6 +27,10 @@ const surveyResponseSchema = {
         },
       ],
     },
+    {
+      name: "submittedAt",
+      type: "datetime", // Store the timestamp when the survey is submitted
+    },
   ],
 };
 

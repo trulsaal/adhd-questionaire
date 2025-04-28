@@ -141,7 +141,7 @@ export default function Survey() {
       {surveyData.statements.map((statement, index) => (
         <div className="flex flex-col " key={index}>
           <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
-            <p className="text-[12px] md:text-sm">{statement}</p>
+            <p className="text-[12px] md:text-lg">{statement}</p>
             <div className=" mt-2 mb-8 flex flex-row items-center md:gap-4 md:my-auto">
               {[0, 1, 2, 3, 4].map((score) => (
                 <label
