@@ -1,13 +1,8 @@
 const surveyResponseSchema = {
   name: "surveyResponse",
-  title: "Survey Response",
   type: "document",
+  title: "Survey Response",
   fields: [
-    {
-      name: "survey",
-      type: "reference",
-      to: [{ type: "survey" }],
-    },
     {
       name: "responses",
       type: "array",
@@ -15,21 +10,16 @@ const surveyResponseSchema = {
         {
           type: "object",
           fields: [
-            {
-              name: "statement",
-              type: "string",
-            },
-            {
-              name: "score",
-              type: "number",
-            },
+            { name: "statement", type: "string" },
+            { name: "score", type: "number" },
           ],
         },
       ],
     },
     {
       name: "submittedAt",
-      type: "datetime", // Store the timestamp when the survey is submitted
+      type: "datetime",
+      title: "Submitted At",
     },
   ],
 };
