@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
-  content: ["./src/**/*.{html,js,ts,jsx,tsx}"], // Adjust paths to match your project structure
+  darkMode: "class", // ✅ THIS IS ESSENTIAL
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },

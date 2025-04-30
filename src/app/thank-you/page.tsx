@@ -11,7 +11,7 @@ export default function ThankYouPage() {
   }, []);
 
   return (
-    <div className="p-10 text-white text-center">
+    <div className="p-10 dark:text-white light:text-slate-700 text-center">
       <h1 className="text-3xl font-bold mb-4">Takk for at du svarte!</h1>
       <p className="text-lg">Denne siden lukkes automatisk om 10 sekunder.</p>
     </div>

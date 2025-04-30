@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 h1 {
-  @apply text-lg md:text-3xl font-bold text-slate-100;
+  @apply text-lg md:text-3xl font-bold;
 }
 h2 {
-  @apply text-lg md:text-2xl font-semibold text-slate-100;
+  @apply text-lg md:text-2xl font-semibold;
 }
 h3 {
-  @apply text-lg font-bold text-slate-100 mt-2;
+  @apply text-lg font-bold  mt-2;
 }
 
 @keyframes dim-flash {

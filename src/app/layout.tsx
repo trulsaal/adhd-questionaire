@@ -1,6 +1,8 @@
+// layout.tsx
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import ThemeToggle from "./components/ThemeToggle"; // Adjusted to use absolute imports for Next.js
 
 const outfitFont = Outfit({
   variable: "--font-outfit",
@@ -15,15 +17,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${outfitFont.className} font-outfitFont bg-gradient-to-r from-gray-900 to-gray-800 flex h-lvh`}
+        className={`${outfitFont.className} text-gray-900 dark:text-white bg-white dark:bg-gray-900 flex flex-col min-h-screen`}
       >
-        {children}
+        <ThemeToggle />
+        <div className="m-auto">{children}</div>
       </body>
     </html>
   );

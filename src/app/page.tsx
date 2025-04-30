@@ -26,20 +26,27 @@ export default function HomePage() {
   };
 
   return (
-    <main className="p-10 text-white">
-      <h1 className="text-2xl font-bold mb-4">Generate ADHD Mapping Link</h1>
+    <main className="w-fit  p-10">
+      <h1 className="text-2xl font-bold mb-4 ">
+        {!link
+          ? "Screening for ADHD. Trykk på knappen under for å generere link til bruker"
+          : "Send linken til kandidaten"}
+      </h1>
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        className={
+          !link
+            ? "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded cursor-pointer transition-all duration-300 ease-in-out"
+            : "bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed opacity-50"
+        }
       >
-        {loading ? "Generating..." : "Generate Mapping"}
+        {loading ? "Genererer..." : "Generer link"}
       </button>
 
       {link && (
         <div className="mt-6">
-          <p className="text-green-400">Share this link:</p>
-          <a href={link} target="_blank" className="underline text-blue-300">
+          <a href={link} className="underline text-blue-500 text-lg">
             {link}
           </a>
         </div>

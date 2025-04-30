@@ -2,7 +2,7 @@
 
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { FaFileAlt } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
 
@@ -93,11 +93,10 @@ export default function Survey() {
     document.body.classList.add("flash-bg");
   };
 
+  const router = useRouter();
+
   const handleSendAnswers = async () => {
-    if (!surveyData) {
-      console.error("Survey data is not available.");
-      return;
-    }
+    if (!surveyData) return;
 
     const formattedResponses = Object.entries(answers).map(
       ([index, score]) => ({
@@ -106,7 +105,6 @@ export default function Survey() {
       })
     );
 
-    // Filter responses with score >= 3
     const filteredResponses = formattedResponses.filter((r) => r.score >= 3);
 
     sessionStorage.setItem("surveyResults", JSON.stringify(filteredResponses));
@@ -115,28 +113,24 @@ export default function Survey() {
     try {
       const response = await fetch("/api/sendAnswers", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           responses: filteredResponses,
           submittedAt: new Date().toISOString(),
         }),
       });
 
-      const responseText = await response.text();
-      console.log("Raw response:", responseText);
-
       if (!response.ok) {
+        const responseText = await response.text();
         throw new Error(`HTTP ${response.status}: ${responseText}`);
       }
-
-      const responseData = JSON.parse(responseText);
-      console.log("Submission success:", responseData);
 
       setSent(true);
       sessionStorage.removeItem("surveyAnswers");
       sessionStorage.removeItem("surveyResults");
+
+      // Redirect to thank-you page
+      router.push("/thank-you");
     } catch (error) {
       console.error("Submission failed:", error);
       alert(
@@ -151,7 +145,7 @@ export default function Survey() {
 
   return (
     <form
-      className="md:p-14 rounded-2xl bg-gray-800 gap-1 p-4 flex flex-col w-fit m-auto"
+      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit"
       onSubmit={(e) => e.preventDefault()}
     >
       <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
@@ -179,7 +173,7 @@ export default function Survey() {
                 <label
                   className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl ${
                     answers[index] === score
-                      ? "box-shadow font-black md:font-normal text-white"
+                      ? "box-shadow font-black md:font-normal text-white bg-slate-700 dark:bg-white dark:text-black"
                       : "md:bg-white md:text-black"
                   }`}
                   key={score}
@@ -200,19 +194,19 @@ export default function Survey() {
         </div>
       ))}
 
-      <div className="w-full flex items-center mt-10 justify-end">
+      <div className="w-full flex items-center gap-4 align-middle mt-10 justify-end">
         {sent && (
-          <div className="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">
+          <div className="p-4 bg-green-100 text-green-800 rounded-lg">
             Svarene er registrert!
           </div>
         )}
         <button
           type="button"
-          className="mt-6 px-12 py-3 w-fit bg-green-300 text-black font-bold rounded-full hover:bg-green-800 transition-all duration-300 disabled:bg-gray-400"
+          className="cursor-pointer px-12 py-3 w-fit bg-green-300 text-black font-bold rounded-full hover:bg-green-400 transition-all duration-300 disabled:bg-gray-400"
           onClick={handleSendAnswers}
           disabled={sending || sent}
         >
-          {sent ? "Svar sendt!" : sending ? "Sender..." : "Send svar"}
+          {sent ? "Svar sendt!" : sending ? "Sender..." : "Registrer svar"}
         </button>
       </div>
     </form>
