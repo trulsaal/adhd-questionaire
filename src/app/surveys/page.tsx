@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@sanity/client";
 import { FaPlusCircle, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -28,7 +28,7 @@ export default function MySurveysPage() {
   });
   console.log("SANITY_PROJECT_ID:", process.env.SANITY_PROJECT_ID);
 
-  const fetchSurveys = async () => {
+  const fetchSurveys = useCallback(async () => {
     try {
       const query = `*[_type == "surveyResponse"] | order(submittedAt desc) {
         _id,
@@ -46,7 +46,7 @@ export default function MySurveysPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [client]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this survey?")) return;
@@ -83,7 +83,7 @@ export default function MySurveysPage() {
 
   useEffect(() => {
     fetchSurveys();
-  }, []);
+  }, [fetchSurveys]);
 
   if (loading) {
     return (
