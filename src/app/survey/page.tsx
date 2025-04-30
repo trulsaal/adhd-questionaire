@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { FaFileAlt } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
+import { Suspense } from "react";
 
 export default function Survey() {
   interface Survey {
@@ -144,71 +145,73 @@ export default function Survey() {
   };
 
   return (
-    <form
-      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit"
-      onSubmit={(e) => e.preventDefault()}
-    >
-      <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
-        <div className="flex flex-row gap-2 items-center h-10">
-          <FaFileAlt className="size-10" />
-          <h1 className="">{surveyData?.title || "Loading..."}</h1>
+    <Suspense fallback={<div>Loading...</div>}>
+      <form
+        className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
+          <div className="flex flex-row gap-2 items-center h-10">
+            <FaFileAlt className="size-10" />
+            <h1 className="">{surveyData?.title || "Loading..."}</h1>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            className="cursor-pointer flex flex-row gap-2 items-center bg-red-300 text-gray-800 md:py-2 py-2 px-2 md:px-6 font-bold text-sm md:text-lg rounded-lg hover:transition-all duration-500 hover:bg-red-400"
+          >
+            Tilbakestill svar
+            <FaCircleXmark className="size-5" />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleReset}
-          className="cursor-pointer flex flex-row gap-2 items-center bg-red-300 text-gray-800 md:py-2 py-2 px-2 md:px-6 font-bold text-sm md:text-lg rounded-lg hover:transition-all duration-500 hover:bg-red-400"
-        >
-          Tilbakestill svar
-          <FaCircleXmark className="size-5" />
-        </button>
-      </div>
-
-      {surveyData?.statements?.map((statement, index) => (
-        <div className="flex flex-col" key={index}>
-          <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
-            <p className="text-[12px] md:text-lg">{statement}</p>
-            <div className="md:mt-2 md:mb-8 flex flex-row items-center md:gap-4 md:my-auto">
-              {[0, 1, 2, 3, 4].map((score) => (
-                <label
-                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl ${
-                    answers[index] === score
-                      ? "box-shadow font-black md:font-normal text-white bg-slate-700 dark:bg-white dark:text-black"
-                      : "md:bg-white md:text-black"
-                  }`}
-                  key={score}
-                >
-                  <input
-                    type="radio"
-                    name={`statement-${index}`}
-                    value={score}
-                    onChange={() => handleChange(index, score)}
-                    checked={answers[index] === score}
-                    className="sr-only"
-                  />
-                  {score}
-                </label>
-              ))}
+        {surveyData?.statements?.map((statement, index) => (
+          <div className="flex flex-col" key={index}>
+            <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
+              <p className="text-[12px] md:text-lg">{statement}</p>
+              <div className="md:mt-2 md:mb-8 flex flex-row items-center md:gap-4 md:my-auto">
+                {[0, 1, 2, 3, 4].map((score) => (
+                  <label
+                    className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl ${
+                      answers[index] === score
+                        ? "box-shadow font-black md:font-normal text-white bg-slate-700 dark:bg-white dark:text-black"
+                        : "md:bg-white md:text-black"
+                    }`}
+                    key={score}
+                  >
+                    <input
+                      type="radio"
+                      name={`statement-${index}`}
+                      value={score}
+                      onChange={() => handleChange(index, score)}
+                      checked={answers[index] === score}
+                      className="sr-only"
+                    />
+                    {score}
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
 
-      <div className="w-full flex items-center gap-4 align-middle mt-10 justify-end">
-        {sent && (
-          <div className="p-4 bg-green-100 text-green-800 rounded-lg">
-            Svarene er registrert!
-          </div>
-        )}
-        <button
-          type="button"
-          className="cursor-pointer px-12 py-3 w-fit bg-green-300 text-black font-bold rounded-full hover:bg-green-400 transition-all duration-300 disabled:bg-gray-400"
-          onClick={handleSendAnswers}
-          disabled={sending || sent}
-        >
-          {sent ? "Svar sendt!" : sending ? "Sender..." : "Registrer svar"}
-        </button>
-      </div>
-    </form>
+        <div className="w-full flex items-center gap-4 align-middle mt-10 justify-end">
+          {sent && (
+            <div className="p-4 bg-green-100 text-green-800 rounded-lg">
+              Svarene er registrert!
+            </div>
+          )}
+          <button
+            type="button"
+            className="cursor-pointer px-12 py-3 w-fit bg-green-300 text-black font-bold rounded-full hover:bg-green-400 transition-all duration-300 disabled:bg-gray-400"
+            onClick={handleSendAnswers}
+            disabled={sending || sent}
+          >
+            {sent ? "Svar sendt!" : sending ? "Sender..." : "Registrer svar"}
+          </button>
+        </div>
+      </form>
+    </Suspense>
   );
 }
