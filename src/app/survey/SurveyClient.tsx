@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { FaFileAlt } from "react-icons/fa";
+import { FaCheck, FaFileAlt } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
 
 export default function SurveyClient() {
@@ -139,54 +139,74 @@ export default function SurveyClient() {
 
   return (
     <form
-      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit"
+      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit md:w-6xl"
       onSubmit={(e) => e.preventDefault()}
     >
-      <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
-        <div className="flex flex-row gap-2 items-center h-10">
-          <FaFileAlt className="size-10" />
-          <h1 className="">{surveyData?.title || "Loading..."}</h1>
-        </div>
+      <div>
+        <div className="mb-4 flex flex-row h-fit w-full justify-between items-center">
+          <div className="flex flex-row gap-2 items-center h-10">
+            <FaFileAlt className="size-10" />
+            <h1 className="">{surveyData?.title || "Loading..."}</h1>
+          </div>
 
-        <button
-          type="button"
-          onClick={handleReset}
-          className="cursor-pointer flex flex-row gap-2 items-center bg-red-300 text-gray-800 md:py-2 py-2 px-2 md:px-6 font-bold text-sm md:text-lg rounded-lg hover:transition-all duration-500 hover:bg-red-400"
-        >
-          Tilbakestill svar
-          <FaCircleXmark className="size-5" />
-        </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="cursor-pointer flex flex-row gap-2 items-center bg-red-300 text-gray-800 md:py-2 py-2 px-2 md:px-6 font-bold text-sm md:text-lg rounded-lg hover:transition-all duration-500 hover:bg-red-400"
+          >
+            Tilbakestill svar
+            <FaCircleXmark className="size-5" />
+          </button>
+        </div>
+        <div className="w-full rounded-lg text-white p-4 my-8 bg-slate-900">
+          <p>
+            Her får du presentert en rekke påstander som måler ulik grad av
+            utfordringer i sammenheng med konsentrasjon, impulsivitet og
+            arbeidsflyt. Du skal svare fra 0 - 5 i hvilken grad du er enig i
+            påstanden. Eksempel: svarer du 4 eller 5 på den første påstanden, er
+            du enig i at du ofte veksler fra den ene til den adnre oppgaven.
+          </p>
+        </div>
       </div>
 
-      {surveyData?.statements?.map((statement, index) => (
-        <div className="flex flex-col" key={index}>
-          <div className="flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8">
-            <p className="text-[12px] md:text-lg">{statement}</p>
-            <div className="md:mt-2 md:mb-8 flex flex-row items-center md:gap-4 md:my-auto">
-              {[0, 1, 2, 3, 4].map((score) => (
-                <label
-                  key={score}
-                  className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl ${
-                    answers[index] === score
-                      ? "box-shadow font-black md:font-normal text-white bg-slate-700 dark:bg-white dark:text-black"
-                      : "md:bg-white md:text-black"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={`statement-${index}`}
-                    value={score}
-                    onChange={() => handleChange(index, score)}
-                    checked={answers[index] === score}
-                    className="sr-only"
-                  />
-                  {score}
-                </label>
-              ))}
+      {surveyData?.statements?.map((statement, index) => {
+        const isAnswered = answers.hasOwnProperty(index);
+
+        return (
+          <div className="flex gap-2 items-center w-full " key={index}>
+            <div
+              className={`flex flex-row justify-between md:gap-24 border-[1px] border-gray-700 rounded-lg md:p-4 p-2 mb-4 items-center border-l-8 transition-all h-24 w-6xl ${
+                isAnswered ? "opacity-30 " : ""
+              }`}
+            >
+              <p className="text-[12px] md:text-lg">{statement}</p>
+              <div className="flex flex-row items-center md:gap-4 md:my-auto">
+                {[0, 1, 2, 3, 4].map((score) => (
+                  <label
+                    key={score}
+                    className={`cursor-pointer active:translate-y-1.5 ease-out transition-transform duration-200 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 md:rounded-full border-2 hover:bg-slate-700 hover:text-white border-gray-200 font-medium md:text-2xl ${
+                      answers[index] === score
+                        ? "box-shadow font-black md:font-normal text-white bg-slate-700 dark:bg-white dark:text-black"
+                        : "md:bg-white md:text-black"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={`statement-${index}`}
+                      value={score}
+                      onChange={() => handleChange(index, score)}
+                      checked={answers[index] === score}
+                      className="sr-only"
+                    />
+                    {score}
+                  </label>
+                ))}
+              </div>
             </div>
+            {isAnswered && <FaCheck />}
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="w-full flex items-center gap-4 align-middle mt-10 justify-end">
         {sent && (

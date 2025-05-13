@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import ThemeToggle from "./components/ThemeToggle"; // Adjusted to use absolute imports for Next.js
 
 const outfitFont = Outfit({
   variable: "--font-outfit",
@@ -25,7 +24,6 @@ export default function RootLayout({
       <body
         className={`${outfitFont.className} text-gray-900 dark:text-white bg-white dark:bg-gray-900 flex flex-col min-h-screen`}
       >
-        <ThemeToggle />
         <div className="m-auto">{children}</div>
       </body>
     </html>
