@@ -139,7 +139,7 @@ export default function SurveyClient() {
 
   return (
     <form
-      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-fit md:w-6xl"
+      className="md:p-14 rounded-2xl gap-1 p-4 flex flex-col w-lvw md:w-6xl"
       onSubmit={(e) => e.preventDefault()}
     >
       <div>
